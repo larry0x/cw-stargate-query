@@ -7,8 +7,8 @@ Am example on how to use Stargate raw queries in CosmWasm contracts. This is use
 Install Protobuf compiler:
 
 ```bash
-brew install protobuf         // macOS
-apt install protobuf-compiler // Ubuntu
+brew install protobuf         # macOS
+apt install protobuf-compiler # Ubuntu
 ```
 
 Install the [Rust plugin](https://github.com/stepancheg/rust-protobuf/tree/v2.27.1/protobuf-codegen):
