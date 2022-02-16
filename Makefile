@@ -4,6 +4,7 @@ OPTIMIZER_VERSION = "0.12.5"
 
 build: gen-rust
 	@echo "--> Compiling WASM contract"
+	@[ -d "artifacts" ] && rm -r artifacts
 	@cd contract
 	@docker run --rm -v "$(shell pwd)/contract":/code \
 		--mount type=volume,source="$(shell basename $(shell pwd))_cache",target=/code/target \
