@@ -1,5 +1,5 @@
 import yargs from "yargs/yargs";
-import { createLCDClient } from "./cli";
+import { createLCDClient } from "./helpers";
 
 const argv = yargs(process.argv)
   .options({
@@ -7,22 +7,22 @@ const argv = yargs(process.argv)
       type: "string",
       demandOption: true,
     },
-    "contract-address": {
+    "contract-addr": {
       type: "string",
       demandOption: true,
     },
-    "query-msg": {
+    "validator-addr": {
       type: "string",
-      demandOption: true,
+      demandOption: false,
     },
   })
   .parseSync();
 
 (async function () {
   const terra = createLCDClient(argv["network"]);
-  const response = await terra.wasm.contractQuery(
-    argv["contract-address"],
-    JSON.parse(argv["query-msg"])
-  );
-  console.log("Query response:", response);
+
+  const response = await terra.wasm.contractQuery(argv["contract-addr"], {
+    validator: argv["validator-addr"],
+  });
+  console.log(response);
 })();

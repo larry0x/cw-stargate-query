@@ -4,46 +4,35 @@ Am example on how to use Stargate raw queries in CosmWasm contracts. This is use
 
 ## Usage
 
-Install Protobuf compiler:
+The dockerized optimizer provided by CosmWasm does not have dependencies such as `protoc` set up, so we need to manually compile and optimize the contract.
+
+Compile the optimizer:
 
 ```bash
-brew install protobuf         # macOS
-apt install protobuf-compiler # Ubuntu
-```
-
-Install the [Rust plugin](https://github.com/stepancheg/rust-protobuf/tree/v2.27.1/protobuf-codegen):
-
-```bash
-cargo install protobuf-codegen
-```
-
-Generate Rust code from Protobuf:
-
-```bash
-make gen-rust
+git clone https://github.com/WebAssembly/binaryen.git
+cd binaryan
+cmake . && make
 ```
 
 Compile the contract:
 
 ```bash
-make build
+cd /path/to/cw-stargate-query
+RUSTFLAGS='-C link-arg=-s' cargo build --release --target wasm32-unknown-unknown --locked
 ```
 
-Deploy the contract:
+Optimize:
+
+```bash
+/path/to/binaryen/bin/wasm-opt -Os ./target/wasm32-unknown-unknown/release/cw_stargate_query.wasm -o ./artifacts/cw_stargate_query.wasm
+```
+
+Deploy:
 
 ```bash
 cd script
 npm install
-ts-node src/deploy --network mainnet|testnet|localterra --code-id <code-id>
-```
-
-Query the contract:
-
-```bash
-ts-node src/query \
-  --network mainnet|testnet|localterra \
-  --contract-address terra1234...abcd \
-  --query-msg '{address:"terra1234....abcd"}'
+ts-node 1_deploy.ts --network mainnet|testnet|localterra --key keyname
 ```
 
 ## License

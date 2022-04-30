@@ -1,0 +1,17 @@
+syntax = "proto3";
+package cosmos.staking.v1beta1;
+
+import "cosmos/staking/v1beta1/staking.proto";
+import "gogoproto/gogo.proto";
+
+// QueryValidatorRequest is response type for the Query/Validator RPC method
+message QueryValidatorRequest {
+  // validator_addr defines the validator address to query for.
+  string validator_addr = 1;
+}
+
+// QueryValidatorResponse is response type for the Query/Validator RPC method
+message QueryValidatorResponse {
+  // validator defines the the validator info.
+  Validator validator = 1 [(gogoproto.nullable) = false];
+}
